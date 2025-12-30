@@ -83,12 +83,12 @@ export function CarForm({ car, onClose }: CarFormProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-gradient-to-br from-gray-900 to-black border border-red-900/30 rounded-xl max-w-5xl w-full my-8 max-h-screen overflow-y-auto">
-        <form onSubmit={handleSubmit} className="p-6 space-y-8">
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-start justify-center p-4 overflow-y-auto">
+      <div className="bg-gradient-to-br from-gray-900 to-black border border-red-900/30 rounded-xl w-full max-w-4xl my-8 max-h-screen overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6 lg:space-y-8">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-gray-800 pb-4">
-            <h2 className="text-3xl font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white">
               {car ? 'تعديل السيارة' : 'إضافة سيارة جديدة'}
             </h2>
             <button type="button" onClick={onClose} className="text-gray-400 hover:text-red-500 transition">
@@ -97,7 +97,7 @@ export function CarForm({ car, onClose }: CarFormProps) {
           </div>
 
           {/* Basic Info Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <Input label="الماركة *" value={formData.brand} onChange={(v) => setFormData({ ...formData, brand: v })} placeholder="مثل: Mercedes, Toyota, BMW" />
             <Input label="الموديل *" value={formData.model} onChange={(v) => setFormData({ ...formData, model: v })} placeholder="مثل: S-Class, Camry, X5" />
             <Input label="السنة *" value={formData.year} onChange={(v) => setFormData({ ...formData, year: v })} placeholder="مثل: ٢٠٢٤ أو 2024" isNumeric />
@@ -116,47 +116,51 @@ export function CarForm({ car, onClose }: CarFormProps) {
 
           {/* Description */}
           <div>
-            <label className="block text-gray-300 mb-2 font-bold">الوصف</label>
+            <label className="block text-gray-300 mb-2 font-bold text-lg">الوصف</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              rows={5}
+              rows={6}
               placeholder="اكتب وصفًا مفصلًا عن السيارة، مميزاتها، حالتها، أي إضافات..."
-              className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 resize-none focus:border-red-600 transition"
+              className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 resize-none focus:border-red-600 transition text-base"
             />
           </div>
 
           {/* Images Section */}
           <div>
-            <label className="block text-gray-300 mb-2 font-bold">الصور (روابط URLs)</label>
-            <div className="flex gap-2 mb-4">
+            <label className="block text-gray-300 mb-2 font-bold text-lg">الصور (روابط URLs)</label>
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <input
                 type="url"
                 value={newImageUrl}
                 onChange={(e) => setNewImageUrl(e.target.value)}
                 placeholder="https://example.com/car-image.jpg"
-                className="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:border-red-600 transition"
+                className="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:border-red-600 transition text-base"
               />
               <button
                 type="button"
                 onClick={addImageUrl}
-                className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-white flex items-center gap-2 transition"
+                className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-white flex items-center justify-center gap-2 transition whitespace-nowrap"
               >
-                <Upload size={18} /> إضافة
+                <Upload size={20} /> إضافة
               </button>
             </div>
 
             {imageUrls.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {imageUrls.map((url, i) => (
                   <div key={i} className="relative group">
-                    <img src={url} alt={`صورة ${i + 1}`} className="w-full h-32 object-cover rounded-lg border border-gray-700" />
+                    <img
+                      src={url}
+                      alt={`صورة ${i + 1}`}
+                      className="w-full h-40 object-cover rounded-lg border border-gray-700"
+                    />
                     <button
                       type="button"
                       onClick={() => removeImage(i)}
                       className="absolute top-2 left-2 bg-red-600 p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={18} />
                     </button>
                   </div>
                 ))}
@@ -165,21 +169,21 @@ export function CarForm({ car, onClose }: CarFormProps) {
           </div>
 
           {/* Flags */}
-          <div className="flex gap-8">
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
             <Checkbox label="سيارة مميزة" checked={formData.is_featured} onChange={(v) => setFormData({ ...formData, is_featured: v })} />
             <Checkbox label="إظهار للعملاء" checked={formData.is_visible} onChange={(v) => setFormData({ ...formData, is_visible: v })} />
           </div>
 
           {/* Actions */}
-          <div className="flex gap-4 pt-6 border-t border-gray-800">
+          <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-800">
             <button
               type="submit"
               disabled={loading || !formData.brand || !formData.model || formData.year <= 0 || formData.price <= 0}
-              className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-700 py-4 rounded-lg font-bold text-white transition"
+              className="w-full sm:flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-700 py-4 rounded-lg font-bold text-white text-lg transition"
             >
               {loading ? 'جاري الحفظ...' : car ? 'حفظ التعديلات' : 'إضافة السيارة'}
             </button>
-            <button type="button" onClick={onClose} className="bg-gray-800 hover:bg-gray-700 px-6 py-4 rounded-lg text-white font-bold transition">
+            <button type="button" onClick={onClose} className="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 px-8 py-4 rounded-lg text-white font-bold text-lg transition">
               إلغاء
             </button>
           </div>
@@ -202,7 +206,7 @@ interface InputProps {
 function Input({ label, value, onChange, placeholder, isNumeric = false }: InputProps) {
   return (
     <div>
-      <label className="block text-gray-300 mb-2 font-bold">{label}</label>
+      <label className="block text-gray-300 mb-2 font-bold text-lg">{label}</label>
       <input
         type="text"
         value={value}
@@ -212,7 +216,7 @@ function Input({ label, value, onChange, placeholder, isNumeric = false }: Input
         inputMode={isNumeric ? 'numeric' : 'text'}
         pattern={isNumeric ? '[0-9٠١٢٣٤٥٦٧٨٩]*' : undefined}
         dir="rtl"
-        className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:border-red-600 transition"
+        className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:border-red-600 transition text-base"
       />
     </div>
   );
@@ -228,15 +232,15 @@ interface SelectProps {
 function Select({ label, value, onChange, options }: SelectProps) {
   return (
     <div>
-      <label className="block text-gray-300 mb-2 font-bold">{label}</label>
+      <label className="block text-gray-300 mb-2 font-bold text-lg">{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:border-red-600 transition"
+        className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:border-red-600 transition text-base"
       >
         <option value="">اختر...</option>
         {options.map((o) => (
-          <option  key={o} value={o}>{o}</option>
+          <option key={o} value={o}>{o}</option>
         ))}
       </select>
     </div>
@@ -251,12 +255,12 @@ interface CheckboxProps {
 
 function Checkbox({ label, checked, onChange }: CheckboxProps) {
   return (
-    <label className="flex items-center gap-3 cursor-pointer select-none">
+    <label className="flex items-center gap-4 cursor-pointer select-none text-lg">
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="w-5 h-5 text-red-600 bg-gray-800 border-gray-700 rounded focus:ring-red-600"
+        className="w-6 h-6 text-red-600 bg-gray-800 border-gray-700 rounded focus:ring-red-600"
       />
       <span className="text-gray-300 font-bold">{label}</span>
     </label>
